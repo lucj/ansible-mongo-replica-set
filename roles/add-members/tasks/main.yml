@@ -1,0 +1,6 @@
+---
+- name: copy addMembers script
+  template: src=addMembers.j2 dest=/tmp/addMembers.js
+
+- name: add members to the replica set
+  shell: mongo --host "{{ groups['primary'][0] }}" < /tmp/addMembers.js
