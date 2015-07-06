@@ -13,11 +13,11 @@
 #   roles:
 #   - role: create_admin_users
 
-- hosts: all
-  remote_user: mongors
-  sudo: True
-  roles:
-  - role: set_key_files
+# - hosts: all
+#   remote_user: mongors
+#   sudo: True
+#   roles:
+#   - role: set_key_files
 
 - hosts: primary
   remote_user: mongors
@@ -36,4 +36,6 @@
   sudo: True
   roles:
    - role: initiate-replica-set
+   - role: wait
+   - role: add-members
 #    - role: create_users

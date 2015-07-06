@@ -1,5 +1,13 @@
 # Deploy mongodb replica set cluster with authentication / authorization
 
+## Typical usage with vagrant boxes
+
+    1. Set ip in of the vagrant boxes in inventory/test.ini
+    2. Run: ansible-playbook -i inventory/test.ini -k -u vagrant -s init.yml
+    3. Run: ansible-playbook -i inventory/test.ini main.yml
+
+Note: other options are detailled below to bootstrap this cluster on non vagrant boxes
+
 ## Inventory
 
 The inventory/ENVIRONMENT.ini file defines the hosts (primary and secondaries) used for the replica set.  
