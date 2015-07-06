@@ -1,0 +1,6 @@
+---
+- name: set up authorized_keys
+  authorized_key: user={{ user }}
+                  key="{{ item }}"
+  with_file:
+    - id_rsa_ansible.pub

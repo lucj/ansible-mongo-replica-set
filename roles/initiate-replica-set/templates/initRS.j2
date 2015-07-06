@@ -1,0 +1,5 @@
+# use admin
+# db.auth("siteRootAdmin", "{{ hostvars[inventory_hostname]['db_root_admin_password']  }}");
+rs.initiate();
+rs.add("{{ groups['secondary'][0] }}:27017");
+rs.add("{{ groups['secondary'][1] }}:27017");

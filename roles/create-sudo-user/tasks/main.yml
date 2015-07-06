@@ -1,0 +1,12 @@
+---
+- name: create sudo user
+  user: name=mongors
+        groups=sudo
+        shell=/bin/bash
+        generate_ssh_key=no
+        state=present
+
+- name: remove mongors sudo passwd
+  copy: src=mongors
+        dest=/etc/sudoers.d
+        mode=0440

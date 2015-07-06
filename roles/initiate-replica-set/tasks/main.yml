@@ -1,0 +1,6 @@
+---
+- name: copy initRS script
+  template: src=initRS.j2 dest=/tmp/initRS.js
+
+- name: initiate replica set from first primary
+  shell: mongo --host "{{ groups['primary'][0] }}" < /tmp/initRS.js

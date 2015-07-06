@@ -1,0 +1,9 @@
+---
+- name: copy configuration file with authentication parameters
+  copy: src=mongod.conf dest=/etc/mongod.conf mode=0644
+
+- name: copy security key for replica to authenticate each others
+  copy: src=mongodb-keyfile dest=/etc/mongodb-keyfile mode=0600
+
+- name: change access right of key file
+  file: path=/etc/mongodb-keyfile state=file owner=mongodb group=mongodb

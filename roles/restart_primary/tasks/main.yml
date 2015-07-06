@@ -1,0 +1,3 @@
+---
+- name: MongoDB | Insure deamon is running correctly
+  service: name=mongod state=restarted

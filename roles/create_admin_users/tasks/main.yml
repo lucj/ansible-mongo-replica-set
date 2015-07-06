@@ -1,0 +1,14 @@
+---
+- debug: msg="current host expected value:{{ groups['primary'][0] }} - current host current value:{{ inventory_hostname }}"
+
+- name: MongoDB - start server
+  service: name=mongod state=reloaded
+
+- name: copy createAdmin script
+  template: src=createAdmins.j2 dest=/tmp/createAdmins.js
+
+- name: create administrator users
+  shell: mongo --host "{{ groups['primary'][0] }}" < /tmp/createAdmins.js
+
+- name: MongoDB - stop server
+  service: name=mongod state=stopped

@@ -1,0 +1,39 @@
+---
+# This playbook deploy a secure mongodb replica set on Ubuntu
+
+- hosts: all
+  remote_user: mongors
+  sudo: True
+  roles:
+  - role: install-mongod-wt-rs
+
+# - hosts: primary
+#   remote_user: mongors
+#   sudo: True
+#   roles:
+#   - role: create_admin_users
+
+- hosts: all
+  remote_user: mongors
+  sudo: True
+  roles:
+  - role: set_key_files
+
+- hosts: primary
+  remote_user: mongors
+  sudo: true
+  roles:
+  - role: restart_primary
+
+- hosts: secondary
+  remote_user: mongors
+  sudo: true
+  roles:
+  - role: restart_secondaries
+
+- hosts: primary
+  remote_user: mongors
+  sudo: True
+  roles:
+   - role: initiate-replica-set
+#    - role: create_users

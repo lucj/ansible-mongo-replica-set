@@ -1,0 +1,14 @@
+se admin
+db.auth("siteUserAdmin", "{{ hostvars[inventory_hostname]['db_user_admin_password']  }}");
+use {{ hostvars[inventory_hostname]['db_name'] }}
+db.createUser({
+    user: "{{ hostvars[inventory_hostname]['db_user_name'] }}",
+    pwd: "{{ hostvars[inventory_hostname]['db_user_password'] }}",
+    roles:
+    [
+      {
+        role: "dbOwner",
+        db: "{{ hostvars[inventory_hostname]['db_name'] }}"
+      }
+    ]
+});

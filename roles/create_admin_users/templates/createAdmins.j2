@@ -1,0 +1,12 @@
+// Create administrative users
+use admin;
+db.createUser( {
+    user: "siteUserAdmin",
+    pwd: "{{ hostvars[inventory_hostname]['db_user_admin_password'] }}",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+});
+db.createUser( {
+    user: "siteRootAdmin",
+    pwd: "{{ hostvars[inventory_hostname]['db_root_admin_password'] }}",
+    roles: [ { role: "root", db: "admin" } ]
+});

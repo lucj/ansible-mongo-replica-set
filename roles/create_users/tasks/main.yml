@@ -1,0 +1,6 @@
+---
+- name: copy createUsers script
+  template: src=createUsers.j2 dest=/tmp/createUsers.js
+
+- name: create users
+  shell: mongo --host "{{ groups['primary'][0] }}" < /tmp/createUsers.js
