@@ -1,4 +1,4 @@
-se admin
+use admin
 db.auth("siteUserAdmin", "{{ hostvars[inventory_hostname]['db_user_admin_password']  }}");
 use {{ hostvars[inventory_hostname]['db_name'] }}
 db.createUser({

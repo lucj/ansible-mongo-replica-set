@@ -38,21 +38,28 @@ Several possible cases:
 
 * Vagrant VM are used for test => vagrant user needs to be used
 
-ansible-playbook -i inventory/ENVIRONMENT.ini -k -u vagrant -s init.yml
+  ```ansible-playbook -i inventory/ENVIRONMENT.ini -k -u vagrant -s init.yml```
 
-vagrant ssh password will be requested (sudo password not requested as vagrant user is authorized to sudo without any password by default)
+Note: vagrant ssh password will be requested (sudo password not requested as vagrant user is authorized to sudo without any password by default)
 
 * root access is provided => root user needs to be used
 
-ansible-playbook -i inventory/ENVIRONMENT.ini -k -u root init.yml
+  ```ansible-playbook -i inventory/ENVIRONMENT.ini -k -u root init.yml```
 
-root ssh password will be requested
+Note: root ssh password will be requested
 
 * another user provided with sudo right and a password needed to issue sudo commands
 
-ansible-playbook -i inventory/ENVIRONMENT.ini -k -K -u USER -s init.yml
+  ```ansible-playbook -i inventory/ENVIRONMENT.ini -k -K -u USER -s init.yml```
 
-Both user's ssh password + sudo password will be requested
+Note: both user's ssh password + sudo password will be requested
+
+* root access provided through an ssh key
+
+  ```ansible-playbook -i inventory/ENVIRONMENT.ini -u root -s init.yml```
+
+Note 1: no need to enter a password there
+Note 2: this option is very usefull, mainly in the case where the host are created by specifying a ssh key (AWS, DO, ...)
 
 ## Replica set setup
 
