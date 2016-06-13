@@ -31,8 +31,8 @@ eg:
 ## Nodes initialisation
 
 This first task initiate the server creating a user named mongors
-- mongors user will be given sudo right with no password needed when running sudo commands
-- current machine ssh key is copied over to the authorized_keys of the server that is beeing provisionned
+* mongors user will be given sudo right with no password needed when running sudo commands
+* current machine ssh key is copied over to the authorized_keys of the server that is beeing provisionned
 
 Several possible cases:
 
@@ -40,7 +40,7 @@ Several possible cases:
 
   ```ansible-playbook -i inventory/ENVIRONMENT.ini -k -u vagrant -s init.yml```
 
-Note: vagrant ssh password will be requested (sudo password not requested as vagrant user is authorized to sudo without any password by default)
+Note: vagrant ssh password requested (sudo password not requested as vagrant user is authorized to sudo without password)
 
 * root access is provided => root user needs to be used
 
@@ -54,15 +54,14 @@ Note: root ssh password will be requested
 
 Note: both user's ssh password + sudo password will be requested
 
-* root access provided through an ssh key
+* root access provided through an ssh key (no need to enter a password)
 
   ```ansible-playbook -i inventory/ENVIRONMENT.ini -u root -s init.yml```
 
-Note 1: no need to enter a password there
-Note 2: this option is very usefull, mainly in the case where the host are created by specifying a ssh key (AWS, DO, ...)
+Note: this option is usefull in the case the host is created by specifying a ssh key (AWS, DO, ...)
 
 ## Replica set setup
 
 Once the nodes are registered, the replica set can be created using the following command:
 
-ansible-playbook -i inventory/ENVIRONMENT.ini main.yml
+```ansible-playbook -i inventory/ENVIRONMENT.ini main.yml```
