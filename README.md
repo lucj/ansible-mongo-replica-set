@@ -1,25 +1,23 @@
-# Deploy mongodb replica set cluster with authentication / authorization
+Deployment of a mongodb replicaset with authN / authZ
+-----------------------------------------------------
 
-## Typical usage with vagrant boxes
+This playbook setup a MongoDB replicaset with
+* user authentication / authorization
+* secure communication between the nodes (using key file).
 
-    1. Set ip in of the vagrant boxes in inventory/test.ini
-    2. Run: ansible-playbook -i inventory/test.ini -k -u vagrant -s init.yml
-    3. Run: ansible-playbook -i inventory/test.ini main.yml
+Inventory
+---------
 
-Note: other options are detailled below to bootstrap this cluster on non vagrant boxes
-
-## Inventory
-
-The inventory/ENVIRONMENT.ini file defines the hosts (primary and secondaries) used for the replica set.  
+The inventory/ENVIRONMENT.ini file defines the hosts (primary and secondaries) used for the replicaset.  
 On top the host decalration, some databasqe parameters are defined
 
 ```
 [primary]
-192.168.1.200
+PRIMARY_IP
 
 [secondary]
-192.168.1.201
-192.168.1.202
+SECONDARY_1_IP
+SECONDARY_2_IP
 
 [primary:vars]
 db_user_admin_username=USER_ADMIN_USERNAME
@@ -31,21 +29,22 @@ db_user_password=DB_PASSWORD
 db_name=DB_NAME
 ```
 
-## Nodes initialisation
+Nodes initialisation
+--------------------
 
-This first task initiate the server creating a user named mongors
+This first task initiates the server creating a user named mongors
 * mongors user will be given sudo right with no password needed when running sudo commands
 * current machine ssh key is copied over to the authorized_keys of the server that is beeing provisionned
 
-Several possible cases:
+Several possible cases depending upon the way the nodes are created:
 
-* Vagrant VM are used for test => vagrant user needs to be used
+* Vagrant VM are used for test => **vagrant** user needs to be used
 
   ```ansible-playbook -i inventory/ENVIRONMENT.ini -k -u vagrant -s init.yml```
 
 Note: vagrant ssh password requested (sudo password not requested as vagrant user is authorized to sudo without password)
 
-* root access is provided => root user needs to be used
+* root access is provided => **root** user needs to be used
 
   ```ansible-playbook -i inventory/ENVIRONMENT.ini -k -u root init.yml```
 
@@ -63,8 +62,44 @@ Note: both user's ssh password + sudo password will be requested
 
 Note: this option is usefull in the case where a ssh key is used when creating the host (AWS, DO, ...)
 
-## Replica set setup
+Replicaset setup
+----------------
 
-Once the nodes are registered, the replica set can be created using the following command:
+Once the nodes are registered, the replicaset can be created using the following command:
 
 ```ansible-playbook -i inventory/ENVIRONMENT.ini main.yml```
+
+Connection to the Replicaset
+----------------------------
+
+```
+$ mongo --host PRIMARY_IP
+use DN_NAME
+db.auth("DB_USERNAME", "DB_PASSWORD")
+db.test.insert({ok:1})
+```
+
+License
+-------
+
+The MIT License (MIT)
+
+Copyright (c) [year] [fullname]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
