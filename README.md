@@ -58,7 +58,7 @@ Note: both user's ssh password + sudo password will be requested
 
   ```ansible-playbook -i inventory/ENVIRONMENT.ini -u root -s init.yml```
 
-Note: this option is usefull in the case the host is created by specifying a ssh key (AWS, DO, ...)
+Note: this option is usefull in the case where a ssh key is used when creating the host (AWS, DO, ...)
 
 ## Replica set setup
 

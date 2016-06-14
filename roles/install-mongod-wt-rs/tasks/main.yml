@@ -4,13 +4,13 @@
   register: mongo_bin
 
 - name: MongoDB | Fetch 10Gen signing key
-  command: apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+  command: apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
   when: mongo_bin.stat.exists == False
 
 - name: MongoDB | Add 10Gen repository
   shell:
-    echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
-    creates=/etc/apt/sources.list.d/mongodb-org-3.0.list
+    echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
+    creates=/etc/apt/sources.list.d/mongodb-org-3.2.list
   when: mongo_bin.stat.exists == False
 
 - name: install mongodb
@@ -21,14 +21,15 @@
   service: name=mongod state=stopped
   when: mongo_bin.stat.exists == False
 
-- name: remove data folder
-  file: path=/var/lib/mongodb state=absent
-  when: mongo_bin.stat.exists == False
+# - name: remove data folder
+#   file: path=/var/lib/mongodb state=absent
+#   when: mongo_bin.stat.exists == False
 
+# On next startup, a configuration file will be used
 - name: copy configuration file
   copy: src=mongod.conf dest=/etc/mongod.conf mode=0644
   when: mongo_bin.stat.exists == False
 
-- name: re-create data folder
-  file: path=/var/lib/mongodb state=directory owner=mongodb group=mongodb
-  when: mongo_bin.stat.exists == False
+# - name: re-create data folder
+#   file: path=/var/lib/mongodb state=directory owner=mongodb group=mongodb
+#   when: mongo_bin.stat.exists == False

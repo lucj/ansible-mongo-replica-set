@@ -1,5 +1,5 @@
 use admin
-db.auth("siteUserAdmin", "{{ hostvars[inventory_hostname]['db_user_admin_password']  }}");
+db.auth("{{ hostvars[inventory_hostname]['db_user_admin_username']  }}", "{{ hostvars[inventory_hostname]['db_user_admin_password']  }}");
 use {{ hostvars[inventory_hostname]['db_name'] }}
 db.createUser({
     user: "{{ hostvars[inventory_hostname]['db_user_name'] }}",
@@ -7,7 +7,7 @@ db.createUser({
     roles:
     [
       {
-        role: "dbOwner",
+        role: "readWrite",
         db: "{{ hostvars[inventory_hostname]['db_name'] }}"
       }
     ]

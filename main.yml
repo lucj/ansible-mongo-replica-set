@@ -1,41 +1,62 @@
 ---
-# This playbook deploy a secure mongodb replica set on Ubuntu
+# This playbook deploy a secure mongodb replica set on Ubuntu hosts
 
+# Install mongodb on each nodes
 - hosts: all
   remote_user: mongors
   sudo: True
   roles:
   - role: install-mongod-wt-rs
 
-- hosts: primary
-  remote_user: mongors
-  sudo: True
-  roles:
-  - role: create_admin_users
-
-# - hosts: all
-#   remote_user: mongors
-#   sudo: True
-#   roles:
-#   - role: set_key_files
-
+# Restart Primary taking into account the new configuration (/etc/mongod.conf)
 - hosts: primary
   remote_user: mongors
   sudo: true
   roles:
-  - role: restart_primary
+  - role: restart_mongod
+  - role: wait
 
+# Initiate the replicaset and create the admin users
+- hosts: primary
+  remote_user: mongors
+  sudo: True
+  roles:
+  - role: initiate-replica-set
+  - role: create_admin_users
+
+# Create key file
+- hosts: localhost
+  tasks:
+  - name: create key file locally
+    local_action: shell openssl rand -base64 755 > /tmp/mongodb-keyfile
+
+# Copy key file to each node
+- hosts: all
+  remote_user: mongors
+  sudo: True
+  roles:
+  - role: set_key_files
+
+# Restart Primary taking into account the new configuration (auth / keyFile option defined in /etc/mongod.conf)
+- hosts: primary
+  remote_user: mongors
+  sudo: true
+  roles:
+  - role: restart_mongod
+  - wait
+
+# Restart Secondaries taking into account the new configuration (auth / keyFile option defined in /etc/mongod.conf)
 - hosts: secondary
   remote_user: mongors
   sudo: true
   roles:
-  - role: restart_secondaries
+  - role: restart_mongod
+  - wait
 
+# Add members to the replicaset and create user for the database
 - hosts: primary
   remote_user: mongors
   sudo: True
   roles:
-   - role: initiate-replica-set
-   - role: wait
-   - role: add-members
-   - role: create_users
+  - role: add-members
+  - role: create_users

@@ -1,5 +1,3 @@
 # use admin
-# db.auth("siteRootAdmin", "{{ hostvars[inventory_hostname]['db_root_admin_password']  }}");
+# db.auth("{{ hostvars[inventory_hostname]['db_cluster_admin_username']  }}", "{{ hostvars[inventory_hostname]['db_cluster_admin_password']  }}");
 rs.initiate({_id: "rs0", members: [{_id: 0, host: "{{ groups['primary'][0] }}:27017"}]});
-rs.add("{{ groups['secondary'][0] }}:27017");
-rs.add("{{ groups['secondary'][1] }}:27017");
