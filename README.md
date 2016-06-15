@@ -36,6 +36,8 @@ This first task initiates the server creating a user named mongors
 * mongors user will be given sudo right with no password needed when running sudo commands
 * current machine ssh key is copied over to the authorized_keys of the server that is beeing provisionned
 
+Note: for this last item, make sure you have a file id_rsa.pub in your home directory. If not you can create one with ```ssh-keygen -t rsa```
+
 Several possible cases depending upon the way the nodes are created:
 
 * Vagrant VM are used for test => **vagrant** user needs to be used
