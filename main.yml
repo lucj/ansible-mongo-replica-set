@@ -14,7 +14,7 @@
   sudo: true
   roles:
   - role: restart_mongod
-  - role: wait
+  - role: wait_connection
 
 # Initiate the replicaset and create the admin users
 - hosts: primary
@@ -52,7 +52,7 @@
   sudo: true
   roles:
   - role: restart_mongod
-  - role: wait
+  - role: wait_connection
 
 # Add members to the replicaset and create user for the database
 - hosts: primary

@@ -1,3 +1,0 @@
----
-- name: wait a couple of seconds
-  pause: seconds=10
