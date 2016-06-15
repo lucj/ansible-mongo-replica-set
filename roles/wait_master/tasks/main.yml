@@ -1,0 +1,8 @@
+---
+- debug: msg="current host expected value:{{ groups['primary'][0] }} - current host current value:{{ inventory_hostname }}"
+
+- name: copy master script
+  template: src=master.j2 dest=/tmp/master.js
+
+- name: wait for host to become primary
+  shell: mongo --host "{{ groups['primary'][0] }}" < /tmp/master.js

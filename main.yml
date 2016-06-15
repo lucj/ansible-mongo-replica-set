@@ -22,6 +22,7 @@
   sudo: True
   roles:
   - role: initiate-replica-set
+  - role: wait_master
   - role: create_admin_users
 
 # Create key file
@@ -43,7 +44,7 @@
   sudo: true
   roles:
   - role: restart_mongod
-  - wait
+  - role: wait_master
 
 # Restart Secondaries taking into account the new configuration (auth / keyFile option defined in /etc/mongod.conf)
 - hosts: secondary
@@ -51,7 +52,7 @@
   sudo: true
   roles:
   - role: restart_mongod
-  - wait
+  - role: wait
 
 # Add members to the replicaset and create user for the database
 - hosts: primary
