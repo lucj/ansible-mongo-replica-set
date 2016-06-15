@@ -1,6 +1,6 @@
 ---
-- name: set up authorized_keys
-  authorized_key: user={{ user }}
-                  key="{{ item }}"
-  with_file:
-    - id_rsa_ansible.pub
+- set_fact:
+    my_ssh_key: "{{ lookup('env','HOME') }}/.ssh/id_rsa.pub"
+
+- authorized_key: user=mongors key="{{ lookup('file', my_ssh_key) }}"
+  sudo: yes
