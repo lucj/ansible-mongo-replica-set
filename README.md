@@ -58,6 +58,10 @@ Note: root ssh password will be requested
 
 Note: both user's ssh password + sudo password will be requested
 
+* user provided with a ssh key added to its authorized_keys
+
+   ```ansible-playbook -i inventory/ENVIRONMENT.ini -u USER --private-key PATH_TO_KEY -s init.yml```
+
 * root access provided through an ssh key (no need to enter a password)
 
   ```ansible-playbook -i inventory/ENVIRONMENT.ini -u root -s init.yml```
@@ -76,7 +80,7 @@ Connection to the Replicaset
 
 ```
 $ mongo --host PRIMARY_IP
-use DN_NAME
+use DB_NAME
 db.auth("DB_USERNAME", "DB_PASSWORD")
 db.test.insert({ok:1})
 ```
@@ -86,7 +90,7 @@ License
 
 The MIT License (MIT)
 
-Copyright (c) [year] [fullname]
+Copyright (c) [2016]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
