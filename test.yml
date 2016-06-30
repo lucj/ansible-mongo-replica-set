@@ -1,0 +1,8 @@
+---
+- hosts: TBD
+  remote_user: mongors
+  sudo: True
+  tasks:
+  - name: purpose
+    ...
+
