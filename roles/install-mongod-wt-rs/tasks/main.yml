@@ -14,22 +14,19 @@
   when: mongo_bin.stat.exists == False
 
 - name: install mongodb
-  apt: name=mongodb-org state=latest update_cache=yes
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - mongodb-org-server
+    - mongodb-org-mongos
+    - mongodb-org-shell
+    - mongodb-org-tools
   when: mongo_bin.stat.exists == False
 
 - name: MongoDB - stop server
   service: name=mongod state=stopped
   when: mongo_bin.stat.exists == False
 
-# - name: remove data folder
-#   file: path=/var/lib/mongodb state=absent
-#   when: mongo_bin.stat.exists == False
-
 # On next startup, a configuration file will be used
 - name: copy configuration file
   copy: src=mongod.conf dest=/etc/mongod.conf mode=0644
   when: mongo_bin.stat.exists == False
-
-# - name: re-create data folder
-#   file: path=/var/lib/mongodb state=directory owner=mongodb group=mongodb
-#   when: mongo_bin.stat.exists == False
