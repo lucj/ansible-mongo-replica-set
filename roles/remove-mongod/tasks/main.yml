@@ -1,0 +1,37 @@
+---
+- name: check if mongo installed
+  stat: path=/usr/bin/mongo
+  register: mongo_bin
+
+- name: make sure mongod is stopped
+  service: name=mongod state=stopped
+  when: mongo_bin.stat.exists == True
+
+- name: remove mongodb package
+  apt: name={{ item }} state=absent
+  with_items:
+    - mongodb-org-server
+    - mongodb-org-mongos
+    - mongodb-org-shell
+    - mongodb-org-tools
+
+- name: remove mongo related files (if needed)
+  file: path={{ item }} state=absent
+  with_items:
+    - /etc/mongod.conf
+    - /etc/mongodb-keyfile.conf
+    - /usr/bin/mongotop
+    - /usr/bin/mongostat
+    - /usr/bin/mongos
+    - /usr/bin/mongorestore
+    - /usr/bin/mongoperf
+    - /usr/bin/mongooplog
+    - /usr/bin/mongoimport
+    - /usr/bin/mongofiles
+    - /usr/bin/mongoexport
+    - /usr/bin/mongodump
+    - /usr/bin/mongo
+    - /usr/bin/mongod
+    - /var/log/mongodb
+    - /var/lib/mongodb
+    - /etc/apt/sources.list.d/mongodb-org-3.2.list
