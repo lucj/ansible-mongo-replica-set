@@ -5,4 +5,4 @@
   template: src=createAdmins.j2 dest=/tmp/createAdmins.js
 
 - name: create administrator users
-  shell: mongo --host "{{ groups['primary'][0] }}" < /tmp/createAdmins.js
+  shell: mongo --ssl --sslAllowInvalidCertificates --host "{{ groups['primary'][0] }}" < /tmp/createAdmins.js

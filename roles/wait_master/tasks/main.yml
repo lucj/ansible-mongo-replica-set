@@ -5,4 +5,4 @@
   template: src=master.j2 dest=/tmp/master.js
 
 - name: wait for host to become primary
-  shell: mongo --host "{{ groups['primary'][0] }}" < /tmp/master.js
+  shell: mongo --ssl --sslAllowInvalidCertificates --host "{{ groups['primary'][0] }}" < /tmp/master.js
