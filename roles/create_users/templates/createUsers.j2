@@ -1,14 +1,16 @@
 use admin
 db.auth("{{ hostvars[inventory_hostname]['db_user_admin_username']  }}", "{{ hostvars[inventory_hostname]['db_user_admin_password']  }}");
 use {{ hostvars[inventory_hostname]['db_name'] }}
-db.createUser({
-    user: "{{ hostvars[inventory_hostname]['db_user_name'] }}",
-    pwd: "{{ hostvars[inventory_hostname]['db_user_password'] }}",
-    roles:
-    [
-      {
-        role: "readWrite",
-        db: "{{ hostvars[inventory_hostname]['db_name'] }}"
-      }
-    ]
-});
+if(!db.getUser("{{ hostvars[inventory_hostname]['db_user_name'] }}")){
+	db.createUser({
+	    user: "{{ hostvars[inventory_hostname]['db_user_name'] }}",
+	    pwd: "{{ hostvars[inventory_hostname]['db_user_password'] }}",
+	    roles:
+	    [
+	      {
+	        role: "readWrite",
+	        db: "{{ hostvars[inventory_hostname]['db_name'] }}"
+	      }
+	    ]
+	});
+}
