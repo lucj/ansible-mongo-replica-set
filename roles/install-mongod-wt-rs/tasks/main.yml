@@ -26,7 +26,21 @@
   service: name=mongod state=stopped
   when: mongo_bin.stat.exists == False
 
+- name: check if ssl folder already exists
+  stat: path=/etc/ssl
+  register: ssl_folder
+
+- name: re-create ssl folder
+  file: path=/etc/ssl state=directory
+  when: (ssl_folder.stat.isdir == False) or ({{ force|default(False) }} == True)
+
+- name: create self-signed SSL cert
+  command: openssl req -newkey rsa:2048 -new -x509 -days 365 -nodes -subj "/C=FR/ST=PACA/L=SophiaAntipolis/O=YourOrga/CN=contact@yourorga.com" -out /etc/ssl/mongodb-cert.crt -keyout /etc/ssl/mongodb-cert.key
+
+- name: compile self-signed SSL cert in PEM file
+  shell: cat /etc/ssl/mongodb-cert.key /etc/ssl/mongodb-cert.crt > /etc/ssl/mongodb.pem
+
 # On next startup, a configuration file will be used
 - name: copy configuration file
   copy: src=mongod.conf dest=/etc/mongod.conf mode=0644
-  when: mongo_bin.stat.exists == False
+#  when: mongo_bin.stat.exists == False

@@ -3,4 +3,4 @@
   template: src=addMembers.j2 dest=/tmp/addMembers.js
 
 - name: add members to the replica set
-  shell: mongo < /tmp/addMembers.js
+  shell: mongo --ssl --sslAllowInvalidCertificates < /tmp/addMembers.js

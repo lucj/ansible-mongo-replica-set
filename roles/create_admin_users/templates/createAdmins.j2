@@ -1,12 +1,16 @@
 // Create administrative users
 use admin;
-db.createUser( {
-    user: "{{ hostvars[inventory_hostname]['db_user_admin_username'] }}",
-    pwd:  "{{ hostvars[inventory_hostname]['db_user_admin_password'] }}",
-    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
-});
-db.createUser( {
-    user: "{{ hostvars[inventory_hostname]['db_cluster_admin_username'] }}",
-    pwd: "{{ hostvars[inventory_hostname]['db_cluster_admin_password'] }}",
-    roles: [ { role: "root", db: "admin" } ]
-});
+if(!db.getUser("{{ hostvars[inventory_hostname]['db_user_admin_username'] }}")){
+	db.createUser( {
+	    user: "{{ hostvars[inventory_hostname]['db_user_admin_username'] }}",
+	    pwd:  "{{ hostvars[inventory_hostname]['db_user_admin_password'] }}",
+	    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+	});
+}
+if(!db.getUser("{{ hostvars[inventory_hostname]['db_cluster_admin_username'] }}")){
+	db.createUser( {
+	    user: "{{ hostvars[inventory_hostname]['db_cluster_admin_username'] }}",
+	    pwd: "{{ hostvars[inventory_hostname]['db_cluster_admin_password'] }}",
+	    roles: [ { role: "root", db: "admin" } ]
+	});
+}
