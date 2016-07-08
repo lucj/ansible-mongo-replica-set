@@ -79,7 +79,7 @@ Connection to the Replicaset
 ----------------------------
 
 ```
-$ mongo --host PRIMARY_IP
+$ mongo --ssl --sslAllowInvalidCertificates --host rs0/PRIMARY_IP,SECONDARY_1_IP,SECONDARY_2_IP
 use DB_NAME
 db.auth("DB_USERNAME", "DB_PASSWORD")
 db.test.insert({ok:1})
